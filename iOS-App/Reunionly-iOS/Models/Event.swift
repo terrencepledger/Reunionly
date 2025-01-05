@@ -12,6 +12,7 @@ import FirebaseFirestore
 struct Event: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String
+    var description: String
     var eventDate: Date
     var location: String
 }

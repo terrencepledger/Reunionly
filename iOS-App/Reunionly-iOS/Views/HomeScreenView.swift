@@ -19,7 +19,7 @@ struct HomeScreenView: View {
                 ProgressView("Loading Events...")
             } else {
                 List(events) { event in
-//                    NavigationLink(destination: EventDetailsScreen(event: event)) {
+                    NavigationLink(destination: EventDetailsView(event: event)) {
                         VStack(alignment: .leading) {
                             Text(event.name)
                                 .font(.headline)
@@ -28,7 +28,7 @@ struct HomeScreenView: View {
                             Text(event.location)
                                 .font(.subheadline)
                         }
-//                    }
+                    }
                 }
                 .navigationTitle("Upcoming Events")
             }
