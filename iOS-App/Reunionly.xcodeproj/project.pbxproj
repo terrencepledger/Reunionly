@@ -11,7 +11,6 @@
 		7607128A2D2A403D00D17DEA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 760712892D2A403D00D17DEA /* FirebaseAuth */; };
 		7607128C2D2A403D00D17DEA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7607128B2D2A403D00D17DEA /* FirebaseFirestore */; };
 		7607128E2D2A403D00D17DEA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7607128D2D2A403D00D17DEA /* FirebaseStorage */; };
-		7607129A2D2A46BA00D17DEA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 760712992D2A46BA00D17DEA /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +31,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		760712992D2A46BA00D17DEA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		762578032D2A320B008AD0A0 /* Reunionly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reunionly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		762578162D2A320E008AD0A0 /* ReunionlyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReunionlyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		762578202D2A320E008AD0A0 /* ReunionlyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReunionlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,7 +86,6 @@
 		762577FA2D2A320B008AD0A0 = {
 			isa = PBXGroup;
 			children = (
-				760712992D2A46BA00D17DEA /* GoogleService-Info.plist */,
 				762578052D2A320B008AD0A0 /* Reunionly-iOS */,
 				762578192D2A320E008AD0A0 /* ReunionlyTests */,
 				762578232D2A320E008AD0A0 /* ReunionlyUITests */,
@@ -233,7 +230,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7607129A2D2A46BA00D17DEA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
