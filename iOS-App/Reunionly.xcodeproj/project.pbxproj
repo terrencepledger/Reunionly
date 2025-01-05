@@ -30,9 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		762578052D2A320B008AD0A0 /* Reunionly */ = {
+		762578052D2A320B008AD0A0 /* Reunionly-iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Reunionly;
+			path = "Reunionly-iOS";
 			sourceTree = "<group>";
 		};
 		762578192D2A320E008AD0A0 /* ReunionlyTests */ = {
@@ -75,7 +75,7 @@
 		762577FA2D2A320B008AD0A0 = {
 			isa = PBXGroup;
 			children = (
-				762578052D2A320B008AD0A0 /* Reunionly */,
+				762578052D2A320B008AD0A0 /* Reunionly-iOS */,
 				762578192D2A320E008AD0A0 /* ReunionlyTests */,
 				762578232D2A320E008AD0A0 /* ReunionlyUITests */,
 				762578042D2A320B008AD0A0 /* Products */,
@@ -108,7 +108,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				762578052D2A320B008AD0A0 /* Reunionly */,
+				762578052D2A320B008AD0A0 /* Reunionly-iOS */,
 			);
 			name = Reunionly;
 			packageProductDependencies = (
