@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import GoogleSignIn
 import FirebaseAuth
-import FirebaseCore
 
 struct EventDetailsView: View {
     let event: Event
-    @State private var showPhoneAuthView = false
-    
+    @State private var isAuthenticated = false
+    @State private var showSignInOptions = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text(event.name)
@@ -37,73 +36,39 @@ struct EventDetailsView: View {
             
             Spacer()
             
-            // Google Sign-In Button
-            Button(action: handleGoogleSignIn) {
-                HStack {
-                    Image(systemName: "globe")
-                    Text("Sign in with Google")
+            if isAuthenticated {
+                NavigationLink(destination: RSVPView(event: event)) {
+                    Text("RSVP Now")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-            }
-            
-            // Phone Auth Button
-            Button(action: {
-                showPhoneAuthView = true
-            }) {
-                HStack {
-                    Image(systemName: "phone")
-                    Text("Sign in with Phone Number")
+            } else {
+                Button(action: {
+                    showSignInOptions = true
+                }) {
+                    Text("Sign In to RSVP")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-            }
-            .sheet(isPresented: $showPhoneAuthView) {
-                PhoneAuthView()
+                .sheet(isPresented: $showSignInOptions) {
+                    SignInOptionsView()
+                }
             }
         }
         .padding()
         .navigationTitle("Event Details")
+        .onAppear {
+            checkAuthStatus()
+        }
     }
-    
-    func handleGoogleSignIn() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootViewController = windowScene.windows.first?.rootViewController else {
-            print("Unable to get root view controller.")
-            return
-        }
-        
-        GIDSignIn.sharedInstance.configure()
-        guard let clientID = FirebaseApp.app()?.options.clientID else {
-            print("Unable to retrieve Firebase clientID")
-            return
-        }
-        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { user, error in
-            if let error = error {
-                print("Error signing in: \(error)")
-                return
-            }
-            
-            guard let idToken = user?.user.idToken?.tokenString, let accessToken = user?.user.accessToken.tokenString else { return }
-            
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
-            
-            Auth.auth().signIn(with: credential) { result, error in
-                if let error = error {
-                    print("Firebase sign-in error: \(error)")
-                } else {
-                    print("User signed in with Google!")
-                }
-            }
-        }
+
+    func checkAuthStatus() {
+        isAuthenticated = Auth.auth().currentUser != nil
     }
 }
-
