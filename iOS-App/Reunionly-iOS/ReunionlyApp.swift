@@ -11,12 +11,11 @@ import Firebase
 
 @main
 struct ReunionlyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             HomeScreenView()
-                .onAppear {
-                    FirebaseApp.configure()
-                }
         }
     }
 }

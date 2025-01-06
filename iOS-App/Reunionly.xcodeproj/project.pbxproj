@@ -12,6 +12,7 @@
 		7607128C2D2A403D00D17DEA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7607128B2D2A403D00D17DEA /* FirebaseFirestore */; };
 		7607128E2D2A403D00D17DEA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7607128D2D2A403D00D17DEA /* FirebaseStorage */; };
 		760712CE2D2A4FAA00D17DEA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 760712CD2D2A4FAA00D17DEA /* GoogleService-Info.plist */; };
+		760712D52D2AFADA00D17DEA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 760712D42D2AFADA00D17DEA /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		760712CD2D2A4FAA00D17DEA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		760712D62D2B489400D17DEA /* Reunionly-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Reunionly-Info.plist"; sourceTree = "<group>"; };
 		762578032D2A320B008AD0A0 /* Reunionly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reunionly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		762578162D2A320E008AD0A0 /* ReunionlyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReunionlyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		762578202D2A320E008AD0A0 /* ReunionlyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReunionlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				760712D52D2AFADA00D17DEA /* GoogleSignInSwift in Frameworks */,
 				760712882D2A403D00D17DEA /* FirebaseAnalytics in Frameworks */,
 				7607128E2D2A403D00D17DEA /* FirebaseStorage in Frameworks */,
 				7607128A2D2A403D00D17DEA /* FirebaseAuth in Frameworks */,
@@ -88,6 +91,7 @@
 		762577FA2D2A320B008AD0A0 = {
 			isa = PBXGroup;
 			children = (
+				760712D62D2B489400D17DEA /* Reunionly-Info.plist */,
 				760712CD2D2A4FAA00D17DEA /* GoogleService-Info.plist */,
 				762578052D2A320B008AD0A0 /* Reunionly-iOS */,
 				762578192D2A320E008AD0A0 /* ReunionlyTests */,
@@ -130,6 +134,7 @@
 				760712892D2A403D00D17DEA /* FirebaseAuth */,
 				7607128B2D2A403D00D17DEA /* FirebaseFirestore */,
 				7607128D2D2A403D00D17DEA /* FirebaseStorage */,
+				760712D42D2AFADA00D17DEA /* GoogleSignInSwift */,
 			);
 			productName = Reunionly;
 			productReference = 762578032D2A320B008AD0A0 /* Reunionly.app */;
@@ -215,6 +220,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				760712862D2A403D00D17DEA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				760712D32D2AFADA00D17DEA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 762578042D2A320B008AD0A0 /* Products */;
@@ -419,6 +425,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Reunionly-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -461,6 +468,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Reunionly-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -629,6 +637,14 @@
 				minimumVersion = 11.6.0;
 			};
 		};
+		760712D32D2AFADA00D17DEA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -651,6 +667,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 760712862D2A403D00D17DEA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		760712D42D2AFADA00D17DEA /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 760712D32D2AFADA00D17DEA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
