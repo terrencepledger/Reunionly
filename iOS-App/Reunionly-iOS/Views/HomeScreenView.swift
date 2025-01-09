@@ -10,21 +10,22 @@ import SwiftUI
 import FirebaseFirestore
 
 struct HomeScreenView: View {
-    @State private var events: [Event] = []
-    @State private var isLoading = true
+    @StateObject private var viewModel = HomeScreenViewModel()
     
     var body: some View {
         NavigationView {
-            if isLoading {
+            if viewModel.isLoading {
                 ProgressView("Loading Events...")
             } else {
-                List(events) { event in
+                List(viewModel.events) { event in
                     NavigationLink(destination: EventDetailsView(event: event)) {
                         VStack(alignment: .leading) {
                             Text(event.name)
                                 .font(.headline)
+                            
                             Text(event.eventDate, style: .date)
                                 .font(.subheadline)
+                            
                             Text(event.location)
                                 .font(.subheadline)
                         }
@@ -32,19 +33,6 @@ struct HomeScreenView: View {
                 }
                 .navigationTitle("Upcoming Events")
             }
-        }
-        .task {
-            await loadEvents()
-        }
-    }
-    
-    func loadEvents() async {
-        do {
-            let eventService = EventService()
-            events = try await eventService.fetchEvents()
-            isLoading = false
-        } catch {
-            print("Error loading events: \(error)")
         }
     }
 }

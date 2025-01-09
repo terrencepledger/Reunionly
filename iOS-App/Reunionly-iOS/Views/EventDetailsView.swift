@@ -1,5 +1,5 @@
 //
-//  EventDetailsScreen.swift
+//  EventDetailsView.swift
 //  Reunionly
 //
 //  Created by Terrence Pledger on 1/4/25.
@@ -57,15 +57,17 @@ struct EventDetailsView: View {
                         .cornerRadius(8)
                 }
                 .sheet(isPresented: $showSignInOptions) {
-                    SignInOptionsView()
+                    SignInOptionsView(presenting: $showSignInOptions)
+                        .onDisappear {
+                            checkAuthStatus()
+                        }
                 }
             }
         }
-        .padding()
-        .navigationTitle("Event Details")
         .onAppear {
             checkAuthStatus()
         }
+        .padding()
     }
 
     func checkAuthStatus() {
