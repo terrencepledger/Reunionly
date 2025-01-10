@@ -26,13 +26,13 @@ Document Storage: Store and share important documents related to the event.
 
 🛠️ Tech Stack
 
-Mobile App (iOS)
+_**Mobile App (iOS)**_
 
 SwiftUI
 
 Firebase (Firestore, Storage, Auth)
 
-Web Dashboard
+_**Web Dashboard**_
 
 React.js
 
