@@ -10,13 +10,13 @@ import FirebaseStorage
 import SwiftUI
 
 class InfoPageViewModel: ObservableObject {
-    @Published var infoPage: InfoPage
+    @Published var infoPage: StorageItem
     @Published var markdownContent: String = ""
     @Published var isLoading = false
     
     private let eventId: String
     
-    init(eventId: String, infoPage: InfoPage) {
+    init(eventId: String, infoPage: StorageItem) {
         self.eventId = eventId
         self.infoPage = infoPage
         

@@ -11,7 +11,7 @@ import MarkdownUI
 struct InfoPageView: View {
     @StateObject private var viewModel: InfoPageViewModel
         
-    init(eventId: String, infoPage: InfoPage) {
+    init(eventId: String, infoPage: StorageItem) {
         _viewModel = StateObject(wrappedValue: InfoPageViewModel(eventId: eventId, infoPage: infoPage))
     }
     

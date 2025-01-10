@@ -10,53 +10,108 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
-class EventDetailsViewModel: ObservableObject {
-    @Published var infoPages: [InfoPage] = []
+@MainActor
+class EventDetailsViewModel: NSObject, ObservableObject {
+    @Published var infoPages: [StorageItem] = []
+    @Published var documents: [StorageItem] = []
+    @Published var isLoading = false
     
     var isAuthenticated = false
     var showSignInOptions = false
     
     private let eventId: String
+    private let db = Firestore.firestore()
     
     init(eventId: String) {
         self.eventId = eventId
+        super.init()
+        load()
+    }
+    
+    func load() {
+        isLoading = true
         checkAuthStatus()
-        loadInfoPages()
+        Task {
+            self.infoPages = await loadStorageItems(from: "infoPages")
+        }
+        Task {
+            self.documents = await loadStorageItems(from: "documents")
+        }
     }
     
-    func checkAuthStatus() {
-        isAuthenticated = Auth.auth().currentUser != nil
-    }
-    
-    func loadInfoPages() {
-        let db = Firestore.firestore()
+    func downloadDocument(for document: StorageItem) async -> URL? {
+        guard let eventDoc = try? await getEventRef()?.getDocument() else {
+            print("No matching event document found.")
+            return nil
+        }
+        let eventDocId = eventDoc.documentID
+        let storageRef = Storage.storage().reference().child("\(eventDocId)/documents/\(document.filename)")
         
-        // Query the events collection to find the document by eventId property
-        db.collection("events")
+        do {
+            let data = try await storageRef.data(maxSize: 10 * 1024 * 1024) // 10 MB limit
+            
+            // Save to temporary directory
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(document.filename)
+            try data.write(to: tempURL)
+            
+            print("Document downloaded to: \(tempURL)")
+            return tempURL
+        } catch {
+            print("Error downloading document: \(error)")
+            return nil
+        }
+    }
+    
+    func openDocument(at url: URL) {
+        let documentController = UIDocumentInteractionController(url: url)
+        documentController.delegate = self
+        
+        documentController.presentPreview(animated: true)
+    }
+    
+    private func getEventRef() async -> DocumentReference? {
+        let snapshot = try? await db.collection("events")
             .whereField("eventId", isEqualTo: eventId)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error finding event document: \(error)")
-                    return
+            .getDocuments()
+        
+        return snapshot?.documents.first?.reference
+    }
+    
+    private func checkAuthStatus() {
+        isAuthenticated = Auth.auth().currentUser != nil
+        isLoading = false
+    }
+    
+    private func loadStorageItems(from fieldName: String) async -> [StorageItem] {
+        guard let eventDoc = try? await getEventRef()?.getDocument(), let data = eventDoc.data() else {
+            print("No matching event document found.")
+            return []
+        }
+        
+        if let itemsArray = data[fieldName] as? [[String: Any]] {
+            return itemsArray.compactMap { item in
+                guard let filename = item["filename"] as? String,
+                      let isPublic = item["isPublic"] as? Bool,
+                      let title = item["title"] as? String, let isPublic = item["isPublic"] as? Bool, isPublic else {
+                    return nil
                 }
-                
-                guard let eventDoc = snapshot?.documents.first else {
-                    print("No matching event document found.")
-                    return
-                }
-                
-                let data = eventDoc.data()
-                
-                if let pages = data["infoPages"] as? [[String: Any]] {
-                    self.infoPages = pages.compactMap { page in
-                        guard let filename = page["filename"] as? String,
-                              let isPublic = page["isPublic"] as? Bool, let title = page["title"] as? String else {
-                            return nil
-                        }
-                        return InfoPage(title: title, filename: filename, isPublic: isPublic)
-                    }
-                }
+                return StorageItem(title: title, filename: filename, isPublic: isPublic)
             }
+        } else {
+            print(String(describing: data))
+            return []
+        }
+    }
+}
+
+extension EventDetailsViewModel: UIDocumentInteractionControllerDelegate {
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        guard let rootViewController = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first?.windows.first?.rootViewController else {
+            fatalError("Unable to get root view controller.")
+        }
+        return rootViewController
     }
 }
 
