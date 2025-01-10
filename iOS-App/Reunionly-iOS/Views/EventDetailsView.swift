@@ -9,34 +9,61 @@ import SwiftUI
 import FirebaseAuth
 
 struct EventDetailsView: View {
+    @StateObject private var viewModel: EventDetailsViewModel
     let event: Event
     @State private var isAuthenticated = false
     @State private var showSignInOptions = false
-
+    
+    init(event: Event) {
+        self.event = event
+        _viewModel = StateObject(wrappedValue: EventDetailsViewModel(eventId: event.eventId))
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            
             Text(event.name)
                 .font(.largeTitle)
                 .bold()
             
-            Text(event.description)
-                .font(.title2)
-                .italic()
-            
-            HStack {
-                Text(event.eventDate, style: .date)
+            // Event Details Section
+            Section(
+                header: Text("Event Details")
                     .font(.title2)
+                    .italic()
+            ) {
+                Text(event.description)
                 
-                Text(event.eventDate, style: .time)
-                    .font(.title2)
+                HStack {
+                    Text(event.eventDate, style: .date)
+                    Text(event.eventDate, style: .time)
+                }
+                
+                Text("Location: \(event.location)")
             }
-            
-            Text("Location: \(event.location)")
-                .font(.title3)
             
             Spacer()
             
-            if isAuthenticated {
+            // Info Pages Section
+            Section(
+                header: Text("Info Pages")
+                    .font(.title2)
+                    .italic()
+            ) {
+                ForEach(viewModel.infoPages, id: \.title) { page in
+                    if page.isPublic {
+                        NavigationLink(destination: InfoPageView(eventId: event.eventId, infoPage: page)) {
+                            Text(page.title)
+                                .font(.headline)
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            // Auth or RSVP
+            if viewModel.isAuthenticated {
                 NavigationLink(destination: RSVPView(event: event)) {
                     Text("RSVP Now")
                         .frame(maxWidth: .infinity)
@@ -47,7 +74,7 @@ struct EventDetailsView: View {
                 }
             } else {
                 Button(action: {
-                    showSignInOptions = true
+                    viewModel.showSignInOptions = true
                 }) {
                     Text("Sign In to RSVP")
                         .frame(maxWidth: .infinity)
@@ -56,21 +83,18 @@ struct EventDetailsView: View {
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
-                .sheet(isPresented: $showSignInOptions) {
-                    SignInOptionsView(presenting: $showSignInOptions)
+                .sheet(isPresented: $viewModel.showSignInOptions) {
+                    SignInOptionsView(presenting: $viewModel.showSignInOptions)
                         .onDisappear {
-                            checkAuthStatus()
+                            viewModel.checkAuthStatus()
                         }
                 }
             }
         }
         .onAppear {
-            checkAuthStatus()
+            viewModel.loadInfoPages()
         }
         .padding()
     }
-
-    func checkAuthStatus() {
-        isAuthenticated = Auth.auth().currentUser != nil
-    }
 }
+
